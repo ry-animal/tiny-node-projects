@@ -1,0 +1,16 @@
+{
+  "name": "restaurant_web_server",
+  "version": "1.0.0",
+  "description": "web app for restaurant using express.js",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "express": "^4.18.2"
+  }
+}
