@@ -1,18 +1,18 @@
-import { appendFileSync } from "fs";
-import { createInterface } from "readline";
+import { createObjectCsvWriter } from "csv-writer";
+import prompt from "prompt";
 
-const readline = createInterface({
-  input: process.stdin,
-  output: process.stdout,
+prompt.start();
+prompt.message = "";
+
+const csvWriter = createObjectCsvWriter({
+  path: "./contacts.csv",
+  append: true,
+  header: [
+    { id: "name", title: "NAME" },
+    { id: "number", title: "NUMBER" },
+    { id: "email", title: "EMAIL" },
+  ],
 });
-
-const readLineAsync = (message) => {
-  return new Promise((resolve) => {
-    readline.question(message, (answer) => {
-      resolve(answer);
-    });
-  });
-};
 
 class Person {
   constructor(name = "", number = "", email = "") {
@@ -22,9 +22,9 @@ class Person {
   }
 
   saveToCSV() {
-    const content = `${this.name},${this.number},${this.email}\n`;
     try {
-      appendFileSync("./contacts.csv", content);
+      const { name, number, email } = this;
+      csvWriter.writeRecords([{ name, number, email }]);
       console.log(`Saved ${this.name} to contacts.csv`);
     } catch (err) {
       console.error(err);
@@ -34,14 +34,22 @@ class Person {
 
 const startApp = async () => {
   const person = new Person();
-  person.name = await readLineAsync("Contact name: ");
-  person.number = await readLineAsync("Contact number: ");
-  person.email = await readLineAsync("Contact email: ");
+  const responses = await prompt.get([
+    { name: "name", description: "Contact Name" },
+    { name: "number", description: "Contact Number" },
+    { name: "email", description: "Contact Email" },
+  ]);
+  Object.assign(person, responses);
   person.saveToCSV();
-  const response = await readLineAsync("Add another contact? (y to continue)");
-  if (response === "y") {
+  const { again } = await prompt.get([
+    {
+      name: "again",
+      description: "Add another contact? (y/n)",
+    },
+  ]);
+  if (again === "y") {
     await startApp();
-  } else readline.close();
+  }
 };
 
 startApp();
