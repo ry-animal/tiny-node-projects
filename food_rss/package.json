@@ -1,0 +1,16 @@
+{
+  "name": "food_rss",
+  "version": "1.0.0",
+  "description": "rss feed for xml food blog",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "prompt-sync": "^4.2.0",
+    "rss-parser": "^3.12.0"
+  }
+}
